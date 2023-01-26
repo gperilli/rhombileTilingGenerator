@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<svg id="container" height="200" width="100" style="outline: 1px solid red;">
+</svg>
+
+
+<script>
+function degrees_to_radians(degrees)
+{
+  var pi = Math.PI;
+  return degrees * (pi/180);
+}
+
+function pythagorean(sideA, sideB){
+  return Math.sqrt(Math.pow(sideA, 2) + Math.pow(sideB, 2));
+}
+// https://en.wikipedia.org/wiki/Rhombille_tiling
+// https://www.mathsisfun.com/sine-cosine-tangent.html
+//alert(Math.tan(degrees_to_radians(30)) * 50)
+
+
+var svg = document.getElementById("container");
+var polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+polygon.setAttribute("fill", "#eee");
+svg.appendChild(polygon);
+
+const blockDiameter = 50;
+const blockPerspDiameter = Math.tan(degrees_to_radians(30)) * 50;
+const blockHypotenuse = pythagorean(50, blockPerspDiameter)
+
+var array = [ 
+            [ 0,50 ], 
+            [ 50,(50 - blockPerspDiameter) ],
+            [ 100,50 ],  
+            [ 50,(50 + blockPerspDiameter) ]
+          ];
+
+for (value of array) {
+  var point = svg.createSVGPoint();
+  point.x = value[0];
+  point.y = value[1];
+  polygon.points.appendItem(point);
+}
+
+var sideOnePolygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+sideOnePolygon.setAttribute("fill", "#bbb");
+svg.appendChild(sideOnePolygon);
+
+var sideArray = [ 
+            [ 50,(50 + blockPerspDiameter) ], 
+            [ 50,(50 + blockPerspDiameter + blockHypotenuse) ],
+            [ 100,(50 + blockHypotenuse) ],
+            [ 100,50 ]
+            
+          ];
+
+for (value of sideArray) {
+  var point = svg.createSVGPoint();
+  point.x = value[0];
+  point.y = value[1];
+  sideOnePolygon.points.appendItem(point);
+}
+
+var sideTwoPolygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+sideTwoPolygon.setAttribute("fill", "#ccc");
+svg.appendChild(sideTwoPolygon);
+
+var sideArray = [ 
+            [ 0,50 ], 
+            [ 50,(50 + blockPerspDiameter) ],
+            [ 50,(50 + blockPerspDiameter + blockHypotenuse) ],
+            [ 0,(50 + blockHypotenuse) ],
+          ];
+
+for (value of sideArray) {
+  var point = svg.createSVGPoint();
+  point.x = value[0];
+  point.y = value[1];
+  sideTwoPolygon.points.appendItem(point);
+}
+
+</script>
+
+</body>
+</html>
