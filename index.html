@@ -3,15 +3,13 @@
 <body>
 
 
-<svg id="rhombileTilingArea" height="500" width="500" style="outline: 1px solid blue;">
+<div id="rhombileTilingArea" style="outline: 1px solid blue; width: 500px; height: 500px;">
+  <svg id="blockContainer" height="200" width="100" style="outline: 1px solid red; overflow: visible; position: relative;">
+  </svg>
+</div>
 
 
 
-</svg>
-
-
-<svg id="blockContainer" height="200" width="100" style="outline: 1px solid red; position: absolute; top: 50px; overflow: visible;">
-</svg>
 
 
 <script>
@@ -38,6 +36,7 @@ const blockHypotenuse = pythagorean(50, blockPerspDiameter)
 const hexagonCenterHeight = blockHypotenuse;
 
 blockContainer.setAttribute("height", blockHypotenuse);
+blockContainer.style.top = `${500 - blockHypotenuse}px`;
 
 // 
 var array = [ 
