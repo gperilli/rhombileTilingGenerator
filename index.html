@@ -3,9 +3,8 @@
 <body>
 
 
-<div id="rhombileTilingArea" style="outline: 1px solid blue; width: 500px; height: 500px;">
-  <svg id="blockContainer" height="200" width="100" style="outline: 1px solid red; overflow: visible; position: relative;">
-  </svg>
+<div id="rhombileTilingArea" style="outline: 1px solid blue; position: relative;">
+
 </div>
 
 
@@ -13,8 +12,7 @@
 
 
 <script>
-function degrees_to_radians(degrees)
-{
+function degrees_to_radians(degrees) {
   var pi = Math.PI;
   return degrees * (pi/180);
 }
@@ -27,73 +25,118 @@ function pythagorean(sideA, sideB){
 //alert(Math.tan(degrees_to_radians(30)) * 50)
 
 
-var blockContainer = document.getElementById("blockContainer");
 
-const blockDiameter = 50;
+
+
+class RhombileBlock {
+  constructor(blockDiameter) {
+    this.blockDiameter = blockDiameter;
+    this.hexagonWidth = blockDiameter * 2;
+    this.blockPerspDiameter = Math.tan(degrees_to_radians(30)) * blockDiameter;
+    this.blockHypotenuse = pythagorean(blockDiameter, this.blockPerspDiameter)
+    this.blockContainer = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    
+
+    this.init()
+  }
+
+  init() {
+    let value;
+    this.blockContainer.setAttribute("height", this.blockHypotenuse);
+    this.blockContainer.setAttribute("width", (this.blockDiameter * 2));
+    this.blockContainer.style.overflow = "visible";
+    this.blockContainer.style.position = "absolute";
+    //this.blockContainer.style.top = "100px";
+    
+
+    // Polygon One
+    var polygonOneArray = [ 
+            [ 0,0 ], 
+            [ this.blockDiameter,(0 - this.blockPerspDiameter) ],
+            [ this.hexagonWidth,0 ],  
+            [ this.blockDiameter,(this.blockPerspDiameter) ]
+    ];
+
+    var leftSidePolygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+    leftSidePolygon.setAttribute("fill", "#eee");
+    this.blockContainer.appendChild(leftSidePolygon);
+    for (value of polygonOneArray) {
+      var point = this.blockContainer.createSVGPoint();
+      point.x = value[0];
+      point.y = value[1];
+      leftSidePolygon.points.appendItem(point);
+    }
+
+    // Polygon Two
+    var sideArray = [ 
+                [ 0,0 ], 
+                [ this.blockDiameter,(this.blockPerspDiameter) ],
+                [ this.blockDiameter,(this.blockPerspDiameter + this.blockHypotenuse) ],
+                [ 0,(this.blockHypotenuse) ],
+    ];
+
+    var leftSidePolygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+    leftSidePolygon.setAttribute("fill", "#ccc");
+    this.blockContainer.appendChild(leftSidePolygon);
+    for (value of sideArray) {
+      var point = this.blockContainer.createSVGPoint();
+      point.x = value[0];
+      point.y = value[1];
+      leftSidePolygon.points.appendItem(point);
+    }
+
+    // Polygon Three
+    var sideArray = [ 
+                [ this.blockDiameter,(this.blockPerspDiameter) ], 
+                [ this.blockDiameter,(this.blockPerspDiameter + this.blockHypotenuse) ],
+                [ this.hexagonWidth,(this.blockHypotenuse) ],
+                [ this.hexagonWidth,0 ]
+    ];
+
+    var rightSidePolygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+    rightSidePolygon.setAttribute("fill", "#bbb");
+    this.blockContainer.appendChild(rightSidePolygon);
+    for (value of sideArray) {
+      var point = this.blockContainer.createSVGPoint();
+      point.x = value[0];
+      point.y = value[1];
+      rightSidePolygon.points.appendItem(point);
+    }
+
+    return this.blockContainer;
+  }
+}
+
+function isOdd(num) { return num % 2;}
+
+var tilingAreaWidthLength = 400;
+var tilingArea = document.querySelector("#rhombileTilingArea");
+tilingArea.style.width = `${tilingAreaWidthLength}px`;
+tilingArea.style.height = `${tilingAreaWidthLength}px`;
+
+const blockDiameter = tilingAreaWidthLength / 10;
 const hexagonWidth = blockDiameter * 2;
 const blockPerspDiameter = Math.tan(degrees_to_radians(30)) * blockDiameter;
-const blockHypotenuse = pythagorean(50, blockPerspDiameter)
-const hexagonCenterHeight = blockHypotenuse;
+const blockHypotenuse = pythagorean(blockDiameter, blockPerspDiameter);
+console.log(blockHypotenuse * 5);
 
-blockContainer.setAttribute("height", blockHypotenuse);
-blockContainer.style.top = `${500 - blockHypotenuse}px`;
-
-// 
-var array = [ 
-            [ 0,0 ], 
-            [ blockDiameter,(0 - blockPerspDiameter) ],
-            [ hexagonWidth,0 ],  
-            [ blockDiameter,(blockPerspDiameter) ]
-          ];
-
-var polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-polygon.setAttribute("fill", "#eee");
-blockContainer.appendChild(polygon);
-
-for (value of array) {
-  var point = blockContainer.createSVGPoint();
-  point.x = value[0];
-  point.y = value[1];
-  polygon.points.appendItem(point);
+blocks = [];
+for (let j = 1; j < 7; j++) {
+  blocks[j] = [];
+  let xPositioningAdjuster = isOdd(j) == 1 ? 0 : blockDiameter;
+  let blockRowAdjuster = isOdd(j) == 1 ? 5 : 6;
+  let blockRowXPositionAdjuster = isOdd(j) == 1 ? 0 : hexagonWidth;
+  for (let i = 0; i < blockRowAdjuster; i++) {
+    blocks[j][i] = new RhombileBlock(blockDiameter);
+    blocks[j][i].blockContainer.style.top = `${(tilingAreaWidthLength - ((blockHypotenuse + blockPerspDiameter) * j) + blockPerspDiameter)}px`;
+    blocks[j][i].blockContainer.style.left = `${((hexagonWidth * i) + xPositioningAdjuster) - blockRowXPositionAdjuster}px`;
+    tilingArea.insertAdjacentHTML("beforeend", blocks[j][i].blockContainer.outerHTML);
+  }
 }
 
 
-var leftSidePolygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-leftSidePolygon.setAttribute("fill", "#ccc");
-blockContainer.appendChild(leftSidePolygon);
 
-var sideArray = [ 
-            [ 0,0 ], 
-            [ blockDiameter,(blockPerspDiameter) ],
-            [ blockDiameter,(blockPerspDiameter + blockHypotenuse) ],
-            [ 0,(blockHypotenuse) ],
-          ];
 
-for (value of sideArray) {
-  var point = blockContainer.createSVGPoint();
-  point.x = value[0];
-  point.y = value[1];
-  leftSidePolygon.points.appendItem(point);
-}
-
-var rightSidePolygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-rightSidePolygon.setAttribute("fill", "#bbb");
-blockContainer.appendChild(rightSidePolygon);
-
-var sideArray = [ 
-            [ blockDiameter,(blockPerspDiameter) ], 
-            [ blockDiameter,(blockPerspDiameter + blockHypotenuse) ],
-            [ hexagonWidth,(blockHypotenuse) ],
-            [ hexagonWidth,0 ]
-            
-          ];
-
-for (value of sideArray) {
-  var point = blockContainer.createSVGPoint();
-  point.x = value[0];
-  point.y = value[1];
-  rightSidePolygon.points.appendItem(point);
-}
 
 
 
