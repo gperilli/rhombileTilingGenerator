@@ -93,8 +93,8 @@ function setRhombileTiling(containerSquare, tilingAreaWidthLength, tilingWidthNu
     let blocks = [];
     for (let j = 1; j < (tilingWidthNumber - 3); j++) {
       blocks[j] = [];
-      let xPositioningAdjuster = isOdd(j) == 1 ? 0 : blockDiameter;
-      let blockRowAdjuster = isOdd(j) == 1 ? (tilingWidthNumber / 2) : ((tilingWidthNumber / 2) + 1);
+      let xPositioningAdjuster = isOdd(j) == 1 ? 0 : blockDiameter * 3;
+      let blockRowAdjuster = isOdd(j) == 1 ? (tilingWidthNumber / 2) : ((tilingWidthNumber / 2) + 0);
       let blockRowXPositionAdjuster = isOdd(j) == 1 ? 0 : hexagonWidth;
       for (let i = 0; i < blockRowAdjuster; i++) {
         blocks[j][i] = new RhombileBlock(blockDiameter);

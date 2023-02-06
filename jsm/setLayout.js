@@ -2,9 +2,10 @@ import { topLevelContainerSize } from '/jsm/utils/topLevelContainerSize.js'
 import { portraitLandscapeSwitcher } from '/jsm/utils/portraitLandscapeSwitcher.js'
 import { setRhombileTiling } from '/jsm/setRhombileTiling.js'
 export { setBlockLayout }
+export { updateBlockLayout }
 
 let topLevelContainerParams
-
+let containerSquare
 // Main Square
 let block;
 let topLevelContainerDimensions, topLevelContainerWidth, topLevelContainerHeight, containerSquareWidth, containerXOffset, containerYOffset;
@@ -32,13 +33,38 @@ function setBlockLayout(topLevelContainer, rhombileSettings) {
     containerYOffset = topLevelContainerParams[2]
     
     // set position and size of main container square
-    const containerSquareElement = `<div id="rhombileTilingArea" style="position: absolute; outline: 1px solid red;"></div>`;
+    const containerSquareElement = `<div id="rhombileTilingArea" style="position: absolute; overflow: hidden;"></div>`;
     topLevelContainer.insertAdjacentHTML("beforeend", containerSquareElement);
-    const containerSquare = document.querySelector("#rhombileTilingArea");
+    containerSquare = document.querySelector("#rhombileTilingArea");
     containerSquarePositioning(containerSquare, containerSquareWidth, containerXOffset, containerYOffset);
 
     /////////////////////////////////////////////
     // set the rhombile tiling
     ////////////////////////////////////////////
     setRhombileTiling(containerSquare, containerSquareWidth, rhombileSettings["tilingWidthNumber"]);
+}
+
+
+function updateBlockLayout(topLevelContainer, rhombileSettings) {
+
+    // get screen size
+    topLevelContainerDimensions = topLevelContainerSize(topLevelContainer)
+    topLevelContainerWidth = topLevelContainerDimensions[0]
+    topLevelContainerHeight = topLevelContainerDimensions[1]
+
+    // Central container
+    topLevelContainerParams = portraitLandscapeSwitcher(topLevelContainerWidth > topLevelContainerHeight, topLevelContainerWidth, topLevelContainerHeight)
+    containerSquareWidth = topLevelContainerParams[0]
+    containerXOffset = topLevelContainerParams[1]
+    containerYOffset = topLevelContainerParams[2]
+    document.querySelector("#rhombileTilingArea").innerHTML = '';
+    containerSquarePositioning(containerSquare, containerSquareWidth, containerXOffset, containerYOffset);
+    
+    // main square
+    //paisleyBlock.width = containerSquareWidth
+    //paisleyBlock.height = containerSquareWidth
+
+    // update position and size     
+    setRhombileTiling(containerSquare, containerSquareWidth, rhombileSettings["tilingWidthNumber"]);
+
 }
