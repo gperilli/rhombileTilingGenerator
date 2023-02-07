@@ -6,6 +6,7 @@ export { updateBlockLayout }
 
 let topLevelContainerParams
 let containerSquare
+let isLandscape
 // Main Square
 let block;
 let topLevelContainerDimensions, topLevelContainerWidth, topLevelContainerHeight, containerSquareWidth, containerXOffset, containerYOffset;
@@ -27,7 +28,8 @@ function setBlockLayout(topLevelContainer, rhombileSettings) {
     topLevelContainerWidth = topLevelContainerDimensions[0]
     topLevelContainerHeight = topLevelContainerDimensions[1]
     
-    topLevelContainerParams = portraitLandscapeSwitcher(topLevelContainerWidth > topLevelContainerHeight, topLevelContainerWidth, topLevelContainerHeight)
+    isLandscape = topLevelContainerWidth > topLevelContainerHeight;
+    topLevelContainerParams = portraitLandscapeSwitcher(isLandscape, topLevelContainerWidth, topLevelContainerHeight)
     containerSquareWidth = topLevelContainerParams[0]
     containerXOffset = topLevelContainerParams[1]
     containerYOffset = topLevelContainerParams[2]
@@ -41,7 +43,7 @@ function setBlockLayout(topLevelContainer, rhombileSettings) {
     /////////////////////////////////////////////
     // set the rhombile tiling
     ////////////////////////////////////////////
-    setRhombileTiling(containerSquare, containerSquareWidth, rhombileSettings["tilingWidthNumber"]);
+    setRhombileTiling(containerSquare, containerSquareWidth, rhombileSettings["tilingWidthNumber"], isLandscape);
 }
 
 
@@ -53,7 +55,8 @@ function updateBlockLayout(topLevelContainer, rhombileSettings) {
     topLevelContainerHeight = topLevelContainerDimensions[1]
 
     // Central container
-    topLevelContainerParams = portraitLandscapeSwitcher(topLevelContainerWidth > topLevelContainerHeight, topLevelContainerWidth, topLevelContainerHeight)
+    isLandscape = topLevelContainerWidth > topLevelContainerHeight;
+    topLevelContainerParams = portraitLandscapeSwitcher(isLandscape, topLevelContainerWidth, topLevelContainerHeight)
     containerSquareWidth = topLevelContainerParams[0]
     containerXOffset = topLevelContainerParams[1]
     containerYOffset = topLevelContainerParams[2]
@@ -65,6 +68,6 @@ function updateBlockLayout(topLevelContainer, rhombileSettings) {
     //paisleyBlock.height = containerSquareWidth
 
     // update position and size     
-    setRhombileTiling(containerSquare, containerSquareWidth, rhombileSettings["tilingWidthNumber"]);
+    setRhombileTiling(containerSquare, containerSquareWidth, rhombileSettings["tilingWidthNumber"], isLandscape);
 
 }

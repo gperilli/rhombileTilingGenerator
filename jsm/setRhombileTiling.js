@@ -82,23 +82,29 @@ class RhombileBlock {
   
 function isOdd(num) { return num % 2;}
 
-function setRhombileTiling(containerSquare, tilingAreaWidthLength, tilingWidthNumber) {
+function setRhombileTiling(containerSquare, tilingAreaWidthLength, tilingWidthNumber, isLandscape) {
     var tilingArea = containerSquare;
 
     const blockDiameter = tilingAreaWidthLength / tilingWidthNumber;
     const hexagonWidth = blockDiameter * 2;
     const blockPerspDiameter = Math.tan(degrees_to_radians(30)) * blockDiameter;
     const blockHypotenuse = pythagorean(blockDiameter, blockPerspDiameter);
+    let portraitLandscapeBlockRowAdjuster = isLandscape == true ? 1 : 2;
+    let portraitLandscapeBlockRowYPosAdjuster = isLandscape == true ? 1 : 0;
     
+    console.log(Math.round(tilingAreaWidthLength / (blockHypotenuse + blockPerspDiameter)));
+
+    let rhombileRows = Math.round(tilingAreaWidthLength / (blockHypotenuse + blockPerspDiameter)) + 2;
+
     let blocks = [];
-    for (let j = 1; j < (tilingWidthNumber - 3); j++) {
+    for (let j = 1; j < (rhombileRows); j++) {
       blocks[j] = [];
       let xPositioningAdjuster = isOdd(j) == 1 ? 0 : blockDiameter * 3;
-      let blockRowAdjuster = isOdd(j) == 1 ? (tilingWidthNumber / 2) : ((tilingWidthNumber / 2) + 0);
-      let blockRowXPositionAdjuster = isOdd(j) == 1 ? 0 : hexagonWidth;
+      let blockRowAdjuster = isOdd(j) == 1 ? (tilingWidthNumber / 2) : ((tilingWidthNumber / 2) + 1);
+      let blockRowXPositionAdjuster = isOdd(j) == 1 ? 0 : hexagonWidth * portraitLandscapeBlockRowAdjuster;
       for (let i = 0; i < blockRowAdjuster; i++) {
         blocks[j][i] = new RhombileBlock(blockDiameter);
-        blocks[j][i].blockContainer.style.top = `${(tilingAreaWidthLength - ((blockHypotenuse + blockPerspDiameter) * j) + blockPerspDiameter)}px`;
+        blocks[j][i].blockContainer.style.top = `${(tilingAreaWidthLength - ((blockHypotenuse + blockPerspDiameter) * j) + (blockPerspDiameter * portraitLandscapeBlockRowYPosAdjuster))}px`;
         blocks[j][i].blockContainer.style.left = `${((hexagonWidth * i) + xPositioningAdjuster) - blockRowXPositionAdjuster}px`;
         tilingArea.insertAdjacentHTML("beforeend", blocks[j][i].blockContainer.outerHTML);
       }

@@ -7,7 +7,7 @@ import { updateBlockLayout } from '/jsm/setLayout.js'
 const topLevelContainer = document.querySelector("body");
 
 const rhombileSettings = {
-    tilingWidthNumber: 30,
+    tilingWidthNumber: 20,
 }
 
 window.addEventListener( 'load', setBlockLayout(topLevelContainer, rhombileSettings) );
