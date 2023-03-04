@@ -68,6 +68,7 @@ class RhombileBlock {
   
       var rightSidePolygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
       rightSidePolygon.setAttribute("fill", "#bbb");
+      rightSidePolygon.setAttribute("opacity", "0.5");
       this.blockContainer.appendChild(rightSidePolygon);
       for (value of sideArray) {
         var point = this.blockContainer.createSVGPoint();
@@ -94,18 +95,18 @@ function setRhombileTiling(containerSquare, tilingAreaWidthLength, tilingWidthNu
     
     console.log(Math.round(tilingAreaWidthLength / (blockHypotenuse + blockPerspDiameter)));
 
-    let rhombileRows = Math.round(tilingAreaWidthLength / (blockHypotenuse + blockPerspDiameter)) + 2;
+    let rhombileRows = Math.round(tilingAreaWidthLength / (blockHypotenuse + blockPerspDiameter)) + 1;
 
     let blocks = [];
     for (let j = 1; j < (rhombileRows); j++) {
       blocks[j] = [];
-      let xPositioningAdjuster = isOdd(j) == 1 ? 0 : blockDiameter * 3;
+      let xPositioningAdjuster = isOdd(j) == 1 ? 0 : blockDiameter * -1;
       let blockRowAdjuster = isOdd(j) == 1 ? (tilingWidthNumber / 2) : ((tilingWidthNumber / 2) + 1);
-      let blockRowXPositionAdjuster = isOdd(j) == 1 ? 0 : hexagonWidth * portraitLandscapeBlockRowAdjuster;
+
       for (let i = 0; i < blockRowAdjuster; i++) {
         blocks[j][i] = new RhombileBlock(blockDiameter);
-        blocks[j][i].blockContainer.style.top = `${(tilingAreaWidthLength - ((blockHypotenuse + blockPerspDiameter) * j) + (blockPerspDiameter * portraitLandscapeBlockRowYPosAdjuster))}px`;
-        blocks[j][i].blockContainer.style.left = `${((hexagonWidth * i) + xPositioningAdjuster) - blockRowXPositionAdjuster}px`;
+        blocks[j][i].blockContainer.style.top = `${(tilingAreaWidthLength - ((blockHypotenuse + blockPerspDiameter) * j) + blockPerspDiameter)}px`;
+        blocks[j][i].blockContainer.style.left = `${((hexagonWidth * i) + xPositioningAdjuster)}px`;
         tilingArea.insertAdjacentHTML("beforeend", blocks[j][i].blockContainer.outerHTML);
       }
     }

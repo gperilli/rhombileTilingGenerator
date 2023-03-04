@@ -1,9 +1,77 @@
 <!DOCTYPE html>
 <html>
 
+<head>
+  <title>Rhombile Designer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
   <body style="width: 100vw; height: 100vh; margin: 0px; overflow: hidden;">
 
-    <!-- <div id="rhombileTilingArea" style="outline: 1px solid blue; position: relative;"></div> -->
+    <div class="section-background">
+      <div class="centralcolumn" align=left style="overflow: visible;">
+        <div style="position: relative; z-index: 99; width: 100%; background: rgba(255, 255, 255, 0.5)">
+          <h1 class="h1--main">Rhombile Designer</h1>
+        </div>
+      </div>
+    </div>
+
+    <div id="" class="menu-container">
+      <div id="chevron-container">
+        <div id="chevron" class="chevron">
+          <svg style="padding: 3px; fill: #eee;"xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"/></svg>
+        </div>
+      </div>
+      <!-- Options Menu -->
+      <div class="menu-container-inner">
+        <fieldset class="menu-container-fieldbox">
+          <legend>Options:</legend>
+          <div style="display: flex; justify-content: flex-start; flex-direction: column;">
+          
+            <div style="display: flex; flex-direction: row; width: 100%;">
+              <div style="display: flex; justify-content: flex-start; flex-direction: column; margin-right: 10px; flex: 50%;">
+                <div>
+                  <input class="coloringRadio" type="radio" id="greys" name="colors" >
+                  <label for="scales">Grays</label>
+                </div>
+            
+                <div>
+                  <input class="coloringRadio" type="radio" id="colors" name="colors" >
+                  <label for="horns">Random Colors</label>
+                </div>
+
+                <div>
+                  <input class="coloringRadio" type="radio" id="monochrome" name="colors" >
+                  <label for="horns">Lines</label>
+                </div>
+              </div>
+            
+              <div style="display: flex; justify-content: flex-start; flex-direction: column; flex: 50%;">
+                  <div>
+                    <input class="fadeInRadio" type="radio" id="fadeIn" name="fadeIn" >
+                    <label for="horns">Random Tile Fade In</label>
+                  </div>
+                  <div>
+                    <input class="fadeInRadio" type="radio" id="randomFadeIn" name="fadeIn" >
+                    <label for="horns">Random Fade In</label>
+                  </div>
+                  <div>
+                    <input class="fadeInRadio" type="radio" id="appearOnLoad" name="fadeIn" >
+                    <label for="horns">Appear on load</label>
+                  </div>
+              </div>
+            </div>
+            
+
+
+          </div>
+        </fieldset>
+      </div>
+    </div>
+
+
 
   </body>
 

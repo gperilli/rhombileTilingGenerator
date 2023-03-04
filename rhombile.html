@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+  <body style="width: 100vw; height: 100vh; margin: 0px; overflow: hidden;">
+
+    <canvas id="myCanvas"></canvas>
+  </body>
+
+</html>
+
+<script>
+
+// Get the canvas element
+const canvas = document.getElementById('canvas');
+
+// Get the 2D context
+const ctx = canvas.getContext('2d');
+
+// Set the size of the canvas
+canvas.width = 400;
+canvas.height = 400;
+
+// Set the initial position and size of the cube
+let x = 200;
+let y = 200;
+let size = 100;
+
+// Set the colors for the cube faces
+const colors = ['red', 'blue'];
+
+// Draw the cube
+function draw() {
+  // Clear the canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  // Draw the top face
+  ctx.fillStyle = colors[0];
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+  ctx.lineTo(x + size, y - size);
+  ctx.lineTo(x + size, y - size - size);
+  ctx.lineTo(x, y - size - size - size);
+  ctx.closePath();
+  ctx.fill();
+  
+  // Draw the right face
+  ctx.fillStyle = colors[1];
+  ctx.beginPath();
+  ctx.moveTo(x + size, y - size);
+  ctx.lineTo(x + size + size, y);
+  ctx.lineTo(x + size + size, y - size - size);
+  ctx.lineTo(x + size, y - size - size);
+  ctx.closePath();
+  ctx.fill();
+  
+  // Draw the bottom face
+  ctx.fillStyle = colors[0];
+  ctx.beginPath();
+  ctx.moveTo(x + size, y);
+  ctx.lineTo(x + size + size, y - size);
+  ctx.lineTo(x, y - size);
+  ctx.lineTo(x - size, y);
+  ctx.closePath();
+  ctx.fill();
+  
+  // Draw the left face
+  ctx.fillStyle = colors[1];
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+  ctx.lineTo(x - size, y - size);
+  ctx.lineTo(x - size, y - size - size);
+  ctx.lineTo(x, y - size - size - size);
+  ctx.closePath();
+  ctx.fill();
+  
+  // Rotate the cube
+  x += 1;
+  y += 1;
+  
+  // Request the next frame
+  requestAnimationFrame(draw);
+}
+
+// Start the animation
+requestAnimationFrame(draw);
+</script>

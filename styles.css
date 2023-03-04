@@ -1,0 +1,180 @@
+html, body {
+margin: 0px;
+overflow: hidden;
+}
+
+:root {
+    --font-family-main: "Mada", sans-serif;
+    --font-family1: "Poppins", sans-serif;
+    --font-family2: "Crimson Text", serif;
+}
+
+.outline {
+    outline: 1px solid #808080;
+}
+
+.box {
+    width: 100px;
+    height: 100px;
+    background: pink;
+    position: fixed;
+    top: 40vh;
+    left: 40vw;
+    transition: 3s;
+}
+
+.box-move {
+    left: 50vw;
+}
+
+.opacityZero {
+    opacity: 0;
+}
+
+.menu-container {
+    position: relative; 
+    z-index: 99; 
+    width: 100%;
+    padding-top: 5px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding: 0 8%;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-grow: 1;
+    background-color: transparent;
+    transition: 0.5s;
+
+}
+
+.menu-continare-inner {
+    background: rgba(255, 255, 255, 0.9);
+    position: relative;
+    
+}
+
+.menu-container-fieldbox {
+    width: 450px;
+    background: rgba(255, 255, 255, 0.6)
+}
+
+#chevron-container {
+    width: 100%; 
+    height: 5vh;
+    display: none;
+}
+
+.chevron {
+    border-radius: 50%; 
+    background: #808080; 
+    height: 5vh; 
+    width: 5vh; 
+    cursor: pointer;
+    transition: 1s;
+}
+
+.chevron--point_up {
+    transform: rotate(0deg);
+}
+
+.chevron--point_down {
+    transform: rotate(180deg);
+}
+
+
+
+#paisleyContainer {
+    position: absolute;
+}
+
+h1.h1--main {
+    font-family: var(--font-family1);
+    font-weight: 900;
+    font-size: clamp(2rem, 3vw + 1.5rem, 5rem);
+    letter-spacing: 0.04em;
+    margin-top: 10px;
+    margin-bottom: 0px;
+    color: var(--uitxtclr-1);
+    word-break: keep-all;
+    text-shadow: 0px 0px 10px rgba(200, 200, 200, 0.95);
+}
+
+h3 {
+    font-family: var(--font-family1);
+    font-weight: 600;
+    font-size: clamp(1.5rem, 0.7vw + 1.5rem, 4rem);
+    padding-top: 0px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    color: var(--uitxtclr-3);
+    text-shadow: 0px 0px 10px rgba(200, 200, 200, 0.95);
+}
+
+.section-background {
+    float: left;
+    display: flex;
+    width: 100%;
+}
+
+.centralcolumn {
+    max-width: 1580px;
+    /** width: 60%; **/
+    padding-top: 5px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding: 0 8%;
+    overflow: hidden;
+    position: relative;
+    display: block;
+    background-color: transparent;
+}
+
+@media (max-width: 880px) {
+    .centralcolumn {
+        width: 100%;
+        float: left;
+    }
+    .menu-container {
+        position: fixed; 
+        z-index: 99; 
+        top: 94vh;
+        width: 100%;
+        height: 30vh;
+        background: rgba(255, 255, 255, 0.5);
+        padding-left: 0px;
+        padding-right: 0px;
+        display: flex;
+        flex-direction: column;        
+        transition: 0.5s;
+    }
+
+    .menu-container-inner {
+        display: relative;
+        width: 100vw;   
+    }
+    .menu-container-fieldbox {
+        position: relative;
+        width: auto;
+    }
+    .raised {
+        top: 70vh;
+    }
+    #chevron-container {
+        width: 100vw; 
+        position: relative;
+        height: 5vh;
+        display: block;
+        margin-left: 5px;
+        margin-top: 2px;
+        margin-bottom: 3px;
+    }
+    
+}
+
+@media (max-width: 600px) {
+    .centralcolumn {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
