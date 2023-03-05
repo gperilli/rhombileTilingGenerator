@@ -130,6 +130,10 @@ h3 {
     background-color: transparent;
 }
 
+.slidecontainer {
+    margin-left: 20px;
+}
+
 @media (max-width: 880px) {
     .centralcolumn {
         width: 100%;

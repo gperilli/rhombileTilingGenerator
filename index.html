@@ -33,34 +33,47 @@
             <div style="display: flex; flex-direction: row; width: 100%;">
               <div style="display: flex; justify-content: flex-start; flex-direction: column; margin-right: 10px; flex: 50%;">
                 <div>
+                  <label for="scales">Tile Density</label>
+                  <div class="slidecontainer">
+                    <input type="range" min="5" max="50" value="20" class="slider" id="tileDensity">
+                  </div>
+                </div>
+                
+                <div>
                   <input class="coloringRadio" type="radio" id="greys" name="colors" >
-                  <label for="scales">Grays</label>
+                  <label>Grays</label>
                 </div>
             
                 <div>
                   <input class="coloringRadio" type="radio" id="colors" name="colors" >
-                  <label for="horns">Random Colors</label>
+                  <label>Random Colors</label>
                 </div>
 
                 <div>
-                  <input class="coloringRadio" type="radio" id="monochrome" name="colors" >
-                  <label for="horns">Lines</label>
+                  <input class="coloringRadio" type="radio" id="lines" name="colors" >
+                  <label>Lines</label>
+                </div>
+
+                <label for="scales">Color Opacity</label>
+                <div class="slidecontainer">
+                  <input type="range" min="10" max="100" value="0.5" class="slider" id="coloringOpacity">
                 </div>
               </div>
             
               <div style="display: flex; justify-content: flex-start; flex-direction: column; flex: 50%;">
                   <div>
-                    <input class="fadeInRadio" type="radio" id="fadeIn" name="fadeIn" >
-                    <label for="horns">Random Tile Fade In</label>
-                  </div>
-                  <div>
-                    <input class="fadeInRadio" type="radio" id="randomFadeIn" name="fadeIn" >
-                    <label for="horns">Random Fade In</label>
-                  </div>
-                  <div>
                     <input class="fadeInRadio" type="radio" id="appearOnLoad" name="fadeIn" >
                     <label for="horns">Appear on load</label>
                   </div>
+                  <div>
+                    <input class="fadeInRadio" type="radio" id="randomTileFadeIn" name="fadeIn" >
+                    <label for="horns">Random Tile Fade In</label>
+                  </div>
+                  <div>
+                    <input class="fadeInRadio" type="radio" id="randomBlockFadeIn" name="fadeIn" >
+                    <label for="horns">Random Block In</label>
+                  </div>
+                  
               </div>
             </div>
             

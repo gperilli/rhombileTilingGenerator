@@ -1,7 +1,7 @@
 import { topLevelContainerSize } from '/jsm/utils/topLevelContainerSize.js'
 import { portraitLandscapeSwitcher } from '/jsm/utils/portraitLandscapeSwitcher.js'
 import { setRhombileTiling } from '/jsm/setRhombileTiling.js'
-export { setBlockLayout }
+export { setRhombileBlockLayout }
 export { updateBlockLayout }
 
 let topLevelContainerParams
@@ -18,7 +18,7 @@ function containerSquarePositioning(containerSquare, containerSquareWidth, conta
     containerSquare.style.top = "".concat(containerYOffset, "px");
 }
 
-function setBlockLayout(topLevelContainer, rhombileSettings) {
+function setRhombileBlockLayout(topLevelContainer, rhombileSettings) {
 
     /////////////////////////////////////////////////////
     // set layout based on screen size
@@ -43,7 +43,7 @@ function setBlockLayout(topLevelContainer, rhombileSettings) {
     /////////////////////////////////////////////
     // set the rhombile tiling
     ////////////////////////////////////////////
-    setRhombileTiling(containerSquare, containerSquareWidth, rhombileSettings["tilingWidthNumber"], isLandscape);
+    setRhombileTiling(containerSquare, containerSquareWidth, rhombileSettings);
 }
 
 
@@ -68,6 +68,6 @@ function updateBlockLayout(topLevelContainer, rhombileSettings) {
     //paisleyBlock.height = containerSquareWidth
 
     // update position and size     
-    setRhombileTiling(containerSquare, containerSquareWidth, rhombileSettings["tilingWidthNumber"], isLandscape);
+    setRhombileTiling(containerSquare, containerSquareWidth, rhombileSettings);
 
 }
