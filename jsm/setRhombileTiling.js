@@ -94,10 +94,10 @@ function setRhombileTiling(containerSquare, tilingAreaWidthLength, rhombileSetti
     
     console.log(Math.round(tilingAreaWidthLength / (blockHypotenuse + blockPerspDiameter)));
 
-    let rhombileRows = Math.round(tilingAreaWidthLength / (blockHypotenuse + blockPerspDiameter)) + 1;
+    let rhombileRows = Math.round(tilingAreaWidthLength / (blockHypotenuse + blockPerspDiameter)) + 2;
 
     let blocks = [];
-    for (let j = 1; j < (rhombileRows); j++) {
+    for (let j = 1; j < rhombileRows; j++) {
       blocks[j] = [];
       let xPositioningAdjuster = isOdd(j) == 1 ? 0 : blockDiameter * -1;
       let blockRowAdjuster = isOdd(j) == 1 ? (rhombileSettings["tileDensity"] / 2) : ((rhombileSettings["tileDensity"] / 2) + 1);
@@ -105,7 +105,7 @@ function setRhombileTiling(containerSquare, tilingAreaWidthLength, rhombileSetti
       for (let i = 0; i < blockRowAdjuster; i++) {
         blocks[j][i] = new RhombileBlock(blockDiameter, rhombileSettings["coloringOpacity"]);
         console.log((tilingAreaWidthLength - ((blockHypotenuse + blockPerspDiameter) * j)));
-        blocks[j][i].blockContainer.style.top = `${((tilingAreaWidthLength - ((blockHypotenuse + blockPerspDiameter) * j)))}px`;
+        blocks[j][i].blockContainer.style.top = `${((tilingAreaWidthLength - ((blockHypotenuse + blockPerspDiameter) * j)) + blockPerspDiameter)}px`;
         blocks[j][i].blockContainer.style.left = `${((hexagonWidth * i) + xPositioningAdjuster)}px`;
         tilingArea.insertAdjacentHTML("beforeend", blocks[j][i].blockContainer.outerHTML);
       }
