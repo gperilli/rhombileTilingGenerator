@@ -7,6 +7,7 @@
   <meta content="width=device-width, initial-scale=1" name="viewport" />
   <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
+<script src="node_modules/@eastdesire/jscolor/jscolor.js"></script>
 
   <body style="width: 100vw; height: 100vh; margin: 0px; overflow: hidden;">
 
@@ -32,20 +33,34 @@
           
             <div style="display: flex; flex-direction: row; width: 100%;">
               <div style="display: flex; justify-content: flex-start; flex-direction: column; margin-right: 10px; flex: 50%;">
+                
                 <div>
-                  <label for="scales">Tile Density</label>
+                  <label>Tile Density</label>
                   <div class="slidecontainer">
                     <input type="range" min="5" max="50" value="20" class="slider" id="tileDensity">
                   </div>
                 </div>
                 
+                <label>Colring</label>
                 <div>
                   <input class="coloringRadio" type="radio" id="greys" name="colors" >
                   <label>Grays</label>
                 </div>
+
+                
+                <div class="slidecontainer">
+                  <input type="range" min="10" max="100" value="0.5" class="slider" id="coloringOpacity">
+                </div>
+
+                <div>
+                  <input class="coloringRadio" style="" type="radio" id="colors" name="colors" >
+                  <label>Colors</label>
+                  <input id="colorPicker" style="margin-left: 25px; width: 85px;" data-jscolor="">
+                </div>
+                
             
                 <div>
-                  <input class="coloringRadio" type="radio" id="colors" name="colors" >
+                  <input class="coloringRadio" type="radio" id="randomColors" name="colors" >
                   <label>Random Colors</label>
                 </div>
 
@@ -54,10 +69,7 @@
                   <label>Lines</label>
                 </div>
 
-                <label for="scales">Color Opacity</label>
-                <div class="slidecontainer">
-                  <input type="range" min="10" max="100" value="0.5" class="slider" id="coloringOpacity">
-                </div>
+                
               </div>
             
               <div style="display: flex; justify-content: flex-start; flex-direction: column; flex: 50%;">
@@ -87,7 +99,12 @@
 
 
   </body>
-
+  <script>
+    // These options apply to all color pickers on the page
+    jscolor.presets.default = {
+      format:'rgba'
+    };
+    </script>
   <script src="jsm/rhombile.js" type="module"></script>
 
 </html>
