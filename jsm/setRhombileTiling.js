@@ -3,10 +3,11 @@ import { degrees_to_radians } from '/jsm/utils/trig.js'
 import { pythagorean } from '/jsm/utils/trig.js'
 
 class RhombileBlock {
-    constructor(blockDiameter, rgbaColor) {
+    constructor(blockDiameter, rhombileSettings) {
       this.blockDiameter = blockDiameter;
-      this.rgbaColor = rgbaColor;
-      this.coloringOpacity = rgbaColor[3];
+      this.rhombileSettings = rhombileSettings;
+
+      this.coloringOpacity = rhombileSettings["coloringOpacity"];
       this.coloringOpacityShades = [
         this.coloringOpacity,
         (this.coloringOpacity * 0.6),
@@ -34,6 +35,21 @@ class RhombileBlock {
     init() {
       let value;
       
+      let hexColors = [];
+      if (this.rhombileSettings["coloring"] == "randomTileColors") {
+        hexColors[0] = "#" + Math.floor(Math.random()*16777215).toString(16);
+        hexColors[1] = "#" + Math.floor(Math.random()*16777215).toString(16);
+        hexColors[2] = "#" + Math.floor(Math.random()*16777215).toString(16);
+      } else if (this.rhombileSettings["coloring"] == "singleColor") {
+        hexColors[0] = this.rhombileSettings["colorTwo"];
+        hexColors[1] = this.rhombileSettings["colorTwo"];
+        hexColors[2] = this.rhombileSettings["colorTwo"];
+      } else if (this.rhombileSettings["coloring"] == "randomCubeColors") {
+        let cubeHexColor = "#" + Math.floor(Math.random()*16777215).toString(16);
+        hexColors[0] = cubeHexColor;
+        hexColors[1] = cubeHexColor;
+        hexColors[2] = cubeHexColor;
+      }
       // Polygon One
       var cubeTopPoints = [ 
         this.hexagonCenterPoint,      
@@ -42,7 +58,7 @@ class RhombileBlock {
         this.hexagonRightUpperPoint,    
       ];
       
-      this.createCubeSidePolygon(cubeTopPoints, `rgb( ${this.RGBAtoRGB(this.rgbaColor[0], this.rgbaColor[1],this.rgbaColor[2], this.coloringOpacityShades[0])[0]}, ${this.RGBAtoRGB(this.rgbaColor[0], this.rgbaColor[1],this.rgbaColor[2],this.coloringOpacityShades[0])[1]}, ${this.RGBAtoRGB(this.rgbaColor[0], this.rgbaColor[1],this.rgbaColor[2],this.coloringOpacityShades[0])[2]} )`);
+      this.createCubeSidePolygon(cubeTopPoints, this.generateRGBColor(this.coloringOpacityShades[0], hexColors[0]));
   
       // Polygon Two
       var cubeLeftPoints = [ 
@@ -51,8 +67,8 @@ class RhombileBlock {
         this.hexagonLeftLowerPoint,
         this.hexagonLeftUpperPoint,
       ];
-      // console.log(this.RGBAtoRGB(this.rgbaColor[0], this.rgbaColor[1],this.rgbaColor[2],this.rgbaColor[3]));
-      this.createCubeSidePolygon(cubeLeftPoints, `rgb( ${this.RGBAtoRGB(this.rgbaColor[0], this.rgbaColor[1],this.rgbaColor[2], this.coloringOpacityShades[1])[0]}, ${this.RGBAtoRGB(this.rgbaColor[0], this.rgbaColor[1],this.rgbaColor[2],this.coloringOpacityShades[1])[1]}, ${this.RGBAtoRGB(this.rgbaColor[0], this.rgbaColor[1],this.rgbaColor[2],this.coloringOpacityShades[1])[2]} )`);
+      
+      this.createCubeSidePolygon(cubeLeftPoints, this.generateRGBColor(this.coloringOpacityShades[1], hexColors[1]));
   
       // Polygon Three
       var cubeRightPoints = [ 
@@ -62,7 +78,7 @@ class RhombileBlock {
         this.hexagonRightUpperPoint
       ];
   
-      this.createCubeSidePolygon(cubeRightPoints, `rgb( ${this.RGBAtoRGB(this.rgbaColor[0], this.rgbaColor[1],this.rgbaColor[2], this.coloringOpacityShades[2])[0]}, ${this.RGBAtoRGB(this.rgbaColor[0], this.rgbaColor[1],this.rgbaColor[2],this.coloringOpacityShades[2])[1]}, ${this.RGBAtoRGB(this.rgbaColor[0], this.rgbaColor[1],this.rgbaColor[2],this.coloringOpacityShades[2])[2]} )`);
+      this.createCubeSidePolygon(cubeRightPoints, this.generateRGBColor(this.coloringOpacityShades[2], hexColors[2]));
         
       return this.blockContainer;
     }
@@ -80,6 +96,16 @@ class RhombileBlock {
       }
     }
 
+    generateRGBColor(coloringOpacity, hexColor) {
+      
+      let rgbColorArray = this.hexToRGB(hexColor);
+      return `rgb( 
+        ${this.RGBAtoRGB(rgbColorArray[0], rgbColorArray[1], rgbColorArray[2], coloringOpacity)[0]}, 
+        ${this.RGBAtoRGB(rgbColorArray[0], rgbColorArray[1], rgbColorArray[2], coloringOpacity)[1]}, 
+        ${this.RGBAtoRGB(rgbColorArray[0], rgbColorArray[1], rgbColorArray[2], coloringOpacity)[2]} 
+      )`
+    }
+
     RGBAtoRGB(r, g, b, a) {
       let alpha = 1 - a;
       let RGB = [];
@@ -89,22 +115,23 @@ class RhombileBlock {
       return RGB;
     }
 
-    RGBAToHexA(r,g,b,a) {
-      r = r.toString(16);
-      g = g.toString(16);
-      b = b.toString(16);
-      a = Math.round(a * 255).toString(16);
-
-      if (r.length == 1)
-        r = "0" + r;
-      if (g.length == 1)
-        g = "0" + g;
-      if (b.length == 1)
-        b = "0" + b;
-      if (a.length == 1)
-        a = "0" + a;
-
-      return "#" + r + g + b + a;
+    hexToRGB(h) {
+      let r = 0, g = 0, b = 0;
+    
+      // 3 digits
+      if (h.length == 4) {
+        r = "0x" + h[1] + h[1];
+        g = "0x" + h[2] + h[2];
+        b = "0x" + h[3] + h[3];
+    
+      // 6 digits
+      } else if (h.length == 7) {
+        r = "0x" + h[1] + h[2];
+        g = "0x" + h[3] + h[4];
+        b = "0x" + h[5] + h[6];
+      }
+      
+      return [r, g, b];
     }
 
   }
@@ -119,29 +146,7 @@ function setRhombileTiling(containerSquare, tilingAreaWidthLength, rhombileSetti
     const blockPerspDiameter = Math.tan(degrees_to_radians(30)) * blockDiameter;
     const blockHypotenuse = pythagorean(blockDiameter, blockPerspDiameter);
     
-    // console.log(Math.round(tilingAreaWidthLength / (blockHypotenuse + blockPerspDiameter)));
-
     let rhombileRows = Math.round(tilingAreaWidthLength / (blockHypotenuse + blockPerspDiameter)) + 2;
-
-    let coloringOpacity = 0;
-
-    let color = rhombileSettings["color"]
-    // "rgba(113,205,99,1)"
-    //color = color.replace(/value/g, '"value"')
-    //color = color.replace(/'/g, '"')
-    let rgbaColor = rhombileSettings["color"]
-    console.log(rgbaColor);
-    rgbaColor = rgbaColor.substring(4, rgbaColor.length-1)
-          .replace('(', '')
-          .replace(']', '')
-          .replace(')', '')
-          .replace(/ /g, '')
-          .replace('ba0', '0')
-          .split(',');
-    coloringOpacity = rgbaColor[3];
-    console.log(rgbaColor);
-
-
     let blocks = [];
     for (let j = 1; j < rhombileRows; j++) {
       blocks[j] = [];
@@ -149,8 +154,7 @@ function setRhombileTiling(containerSquare, tilingAreaWidthLength, rhombileSetti
       let blockRowAdjuster = isOdd(j) == 1 ? (rhombileSettings["tileDensity"] / 2) : ((rhombileSettings["tileDensity"] / 2) + 1);
 
       for (let i = 0; i < blockRowAdjuster; i++) {
-        blocks[j][i] = new RhombileBlock(blockDiameter, rgbaColor);
-        // console.log((tilingAreaWidthLength - ((blockHypotenuse + blockPerspDiameter) * j)));
+        blocks[j][i] = new RhombileBlock(blockDiameter, rhombileSettings);
         blocks[j][i].blockContainer.style.top = `${((tilingAreaWidthLength - ((blockHypotenuse + blockPerspDiameter) * j)) + blockPerspDiameter)}px`;
         blocks[j][i].blockContainer.style.left = `${((hexagonWidth * i) + xPositioningAdjuster)}px`;
         tilingArea.insertAdjacentHTML("beforeend", blocks[j][i].blockContainer.outerHTML);

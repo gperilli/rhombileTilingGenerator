@@ -6,8 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
   <meta content="width=device-width, initial-scale=1" name="viewport" />
   <link rel="stylesheet" type="text/css" href="styles.css">
+  <link rel="stylesheet" href="node_modules/huebee/huebee.css" media="screen">
+  <link rel="stylesheet" href="https://unpkg.com/huebee@2/dist/huebee.min.css">
 </head>
 <script src="node_modules/@eastdesire/jscolor/jscolor.js"></script>
+<script src="node_modules/huebee/dist/huebee.pkgd.js"></script>
+
 
   <body style="width: 100vw; height: 100vh; margin: 0px; overflow: hidden;">
 
@@ -29,11 +33,13 @@
       <div class="menu-container-inner">
         <fieldset class="menu-container-fieldbox">
           <legend>Options:</legend>
-          <div style="display: flex; justify-content: flex-start; flex-direction: column;">
           
-            <div style="display: flex; flex-direction: row; width: 100%;">
-              <div style="display: flex; justify-content: flex-start; flex-direction: column; margin-right: 10px; flex: 50%;">
+          
+            <div class="menu-container-inneer--contents">
+              
+              <div class="menu-container-inner--left">
                 
+                <!-- Density -->
                 <div>
                   <label>Tile Density</label>
                   <div class="slidecontainer">
@@ -41,57 +47,57 @@
                   </div>
                 </div>
                 
-                <label>Colring</label>
+                <!-- Coloring -->
                 <div>
-                  <input class="coloringRadio" type="radio" id="greys" name="colors" >
-                  <label>Grays</label>
-                </div>
+                  <label>Coloring</label>
+                  <div>
+                    <input class="coloringRadio" style="" type="radio" id="singleColor" name="colors" >
+                    <label>Single Color</label>
+                  </div>
 
-                
-                <div class="slidecontainer">
-                  <input type="range" min="10" max="100" value="0.5" class="slider" id="coloringOpacity">
-                </div>
+                  <div style="margin-left: 25px; width: 85px;" >
+                    <input class="text-input" id="colorPickerTwo" value="#08F" />
+                    <input type="range" min="10" max="100" value="0.5" class="slider" id="coloringOpacity">
+                  </div>
 
-                <div>
-                  <input class="coloringRadio" style="" type="radio" id="colors" name="colors" >
-                  <label>Colors</label>
-                  <input id="colorPicker" style="margin-left: 25px; width: 85px;" data-jscolor="">
-                </div>
-                
-            
-                <div>
-                  <input class="coloringRadio" type="radio" id="randomColors" name="colors" >
-                  <label>Random Colors</label>
-                </div>
+                  <div>
+                    <input class="coloringRadio" type="radio" id="randomTileColors" name="colors" >
+                    <label>Random Tile Colors</label>
+                  </div>
 
-                <div>
-                  <input class="coloringRadio" type="radio" id="lines" name="colors" >
-                  <label>Lines</label>
+                  <div>
+                    <input class="coloringRadio" type="radio" id="randomCubeColors" name="colors" >
+                    <label>Random Cube Colors</label>
+                  </div>
+  
+                  <div>
+                    <input class="coloringRadio" type="radio" id="lines" name="colors" >
+                    <label>Lines</label>
+                  </div>
                 </div>
-
                 
               </div>
             
-              <div style="display: flex; justify-content: flex-start; flex-direction: column; flex: 50%;">
-                  <div>
-                    <input class="fadeInRadio" type="radio" id="appearOnLoad" name="fadeIn" >
-                    <label for="horns">Appear on load</label>
-                  </div>
-                  <div>
-                    <input class="fadeInRadio" type="radio" id="randomTileFadeIn" name="fadeIn" >
-                    <label for="horns">Random Tile Fade In</label>
-                  </div>
-                  <div>
-                    <input class="fadeInRadio" type="radio" id="randomBlockFadeIn" name="fadeIn" >
-                    <label for="horns">Random Block In</label>
-                  </div>
-                  
+              <div class="menu-container-inner--right">
+                <div>
+                  <input class="fadeInRadio" type="radio" id="appearOnLoad" name="fadeIn" >
+                  <label for="horns">Appear on load</label>
+                </div>
+                <div>
+                  <input class="fadeInRadio" type="radio" id="randomTileFadeIn" name="fadeIn" >
+                  <label for="horns">Random Tile Fade In</label>
+                </div>
+                <div>
+                  <input class="fadeInRadio" type="radio" id="randomBlockFadeIn" name="fadeIn" >
+                  <label for="horns">Random Block In</label>
+                </div>
               </div>
+
             </div>
             
 
 
-          </div>
+          
         </fieldset>
       </div>
     </div>
@@ -104,7 +110,7 @@
     jscolor.presets.default = {
       format:'rgba'
     };
-    </script>
+  </script>
   <script src="jsm/rhombile.js" type="module"></script>
 
 </html>
