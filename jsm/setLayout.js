@@ -1,6 +1,7 @@
 import { topLevelContainerSize } from '/jsm/utils/topLevelContainerSize.js'
 import { portraitLandscapeSwitcher } from '/jsm/utils/portraitLandscapeSwitcher.js'
 import { setRhombileTiling } from '/jsm/setRhombileTiling.js'
+import { ObjectFadeIn } from '/jsm/objectFadeIn.js'
 export { setRhombileBlockLayout }
 export { updateBlockLayout }
 
@@ -44,6 +45,7 @@ function setRhombileBlockLayout(topLevelContainer, rhombileSettings) {
     // set the rhombile tiling
     ////////////////////////////////////////////
     setRhombileTiling(containerSquare, containerSquareWidth, rhombileSettings);
+    
 }
 
 

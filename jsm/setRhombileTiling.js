@@ -1,6 +1,7 @@
 export { setRhombileTiling }
 import { degrees_to_radians } from '/jsm/utils/trig.js'
 import { pythagorean } from '/jsm/utils/trig.js'
+import { ObjectFadeIn } from '/jsm/objectFadeIn.js'
 
 class RhombileBlock {
     constructor(blockDiameter, rhombileSettings) {
@@ -36,20 +37,60 @@ class RhombileBlock {
       let value;
       
       let hexColors = [];
+      let tileColors = [];
+      let strokeWidth = 1;
+      let strokeColors = [];
       if (this.rhombileSettings["coloring"] == "randomTileColors") {
         hexColors[0] = "#" + Math.floor(Math.random()*16777215).toString(16);
         hexColors[1] = "#" + Math.floor(Math.random()*16777215).toString(16);
         hexColors[2] = "#" + Math.floor(Math.random()*16777215).toString(16);
+        tileColors = [
+          this.generateRGBColor(this.coloringOpacityShades[0], hexColors[0]),
+          this.generateRGBColor(this.coloringOpacityShades[1], hexColors[1]),
+          this.generateRGBColor(this.coloringOpacityShades[2], hexColors[2])
+        ];
+        strokeColors = tileColors;
+        strokeWidth = 1;
       } else if (this.rhombileSettings["coloring"] == "singleColor") {
         hexColors[0] = this.rhombileSettings["colorTwo"];
         hexColors[1] = this.rhombileSettings["colorTwo"];
         hexColors[2] = this.rhombileSettings["colorTwo"];
+        tileColors = [
+          this.generateRGBColor(this.coloringOpacityShades[0], hexColors[0]),
+          this.generateRGBColor(this.coloringOpacityShades[1], hexColors[1]),
+          this.generateRGBColor(this.coloringOpacityShades[2], hexColors[2])
+        ];
+        strokeColors = tileColors;
+        strokeWidth = 1;
       } else if (this.rhombileSettings["coloring"] == "randomCubeColors") {
         let cubeHexColor = "#" + Math.floor(Math.random()*16777215).toString(16);
         hexColors[0] = cubeHexColor;
         hexColors[1] = cubeHexColor;
         hexColors[2] = cubeHexColor;
+        tileColors = [
+          this.generateRGBColor(this.coloringOpacityShades[0], hexColors[0]),
+          this.generateRGBColor(this.coloringOpacityShades[1], hexColors[1]),
+          this.generateRGBColor(this.coloringOpacityShades[2], hexColors[2])
+        ];
+        strokeColors = tileColors;
+        strokeWidth = 1;
+      } else if (this.rhombileSettings["coloring"] == "lines") {
+        hexColors[0] = this.rhombileSettings["colorTwo"];
+        hexColors[1] = this.rhombileSettings["colorTwo"];
+        hexColors[2] = this.rhombileSettings["colorTwo"];
+        tileColors = [
+          this.generateRGBColor(this.coloringOpacityShades[0], '#fff'),
+          this.generateRGBColor(this.coloringOpacityShades[0], '#fff'),
+          this.generateRGBColor(this.coloringOpacityShades[0], '#fff')
+        ];
+        strokeColors = [
+          this.generateRGBColor(this.coloringOpacityShades[0], hexColors[0]),
+          this.generateRGBColor(this.coloringOpacityShades[0], hexColors[1]),
+          this.generateRGBColor(this.coloringOpacityShades[0], hexColors[2])
+        ];
+        strokeWidth = 4;
       }
+      
       // Polygon One
       var cubeTopPoints = [ 
         this.hexagonCenterPoint,      
@@ -57,9 +98,7 @@ class RhombileBlock {
         this.hexagonUpperMostPoint,
         this.hexagonRightUpperPoint,    
       ];
-      
-      this.createCubeSidePolygon(cubeTopPoints, this.generateRGBColor(this.coloringOpacityShades[0], hexColors[0]));
-  
+
       // Polygon Two
       var cubeLeftPoints = [ 
         this.hexagonCenterPoint,
@@ -67,9 +106,7 @@ class RhombileBlock {
         this.hexagonLeftLowerPoint,
         this.hexagonLeftUpperPoint,
       ];
-      
-      this.createCubeSidePolygon(cubeLeftPoints, this.generateRGBColor(this.coloringOpacityShades[1], hexColors[1]));
-  
+
       // Polygon Three
       var cubeRightPoints = [ 
         this.hexagonCenterPoint, 
@@ -77,16 +114,20 @@ class RhombileBlock {
         this.hexagonRightLowerPoint,
         this.hexagonRightUpperPoint
       ];
-  
-      this.createCubeSidePolygon(cubeRightPoints, this.generateRGBColor(this.coloringOpacityShades[2], hexColors[2]));
-        
+      
+      this.createCubeSidePolygon(cubeTopPoints, tileColors[0], strokeWidth, strokeColors[0]);
+      this.createCubeSidePolygon(cubeLeftPoints, tileColors[1], strokeWidth, strokeColors[1]);
+      this.createCubeSidePolygon(cubeRightPoints, tileColors[2], strokeWidth, strokeColors[2]);
+      
       return this.blockContainer;
     }
 
-    createCubeSidePolygon(points, color) {
+    createCubeSidePolygon(points, tileColor, strokeWidth, strokeColor) {
       var cubeSidePolygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-      cubeSidePolygon.setAttribute("fill", color);
-      cubeSidePolygon.setAttribute("stroke", color);
+      cubeSidePolygon.setAttribute("fill", tileColor);
+      cubeSidePolygon.setAttribute("stroke", strokeColor);
+      cubeSidePolygon.setAttribute("stroke-width", strokeWidth);
+      cubeSidePolygon.setAttribute('class', 'rhombileTiles');
       this.blockContainer.appendChild(cubeSidePolygon);
       for (let i = 0; i < points.length; i++) {
         var point = this.blockContainer.createSVGPoint();
@@ -148,6 +189,7 @@ function setRhombileTiling(containerSquare, tilingAreaWidthLength, rhombileSetti
     
     let rhombileRows = Math.round(tilingAreaWidthLength / (blockHypotenuse + blockPerspDiameter)) + 2;
     let blocks = [];
+    let blockCount = -1;
     for (let j = 1; j < rhombileRows; j++) {
       blocks[j] = [];
       let xPositioningAdjuster = isOdd(j) == 1 ? 0 : blockDiameter * -1;
@@ -157,7 +199,39 @@ function setRhombileTiling(containerSquare, tilingAreaWidthLength, rhombileSetti
         blocks[j][i] = new RhombileBlock(blockDiameter, rhombileSettings);
         blocks[j][i].blockContainer.style.top = `${((tilingAreaWidthLength - ((blockHypotenuse + blockPerspDiameter) * j)) + blockPerspDiameter)}px`;
         blocks[j][i].blockContainer.style.left = `${((hexagonWidth * i) + xPositioningAdjuster)}px`;
+        
+        blocks[j][i].blockContainer.style.opacity = 0;
+        blocks[j][i].blockContainer.setAttribute('class', 'rhombileCubes');
         tilingArea.insertAdjacentHTML("beforeend", blocks[j][i].blockContainer.outerHTML);
+        blockCount++;
       }
     }
+
+
+    let allBlocks = document.querySelectorAll(".rhombileCubes")
+    let allTiles = document.querySelectorAll(".rhombileTiles")
+
+    if (rhombileSettings["fadeIn"] == "appearOnLoad") {
+      for (let i = 0; i < allBlocks.length; i++) {
+        allBlocks[i].style.opacity = 1;
+      }
+    } else if (rhombileSettings["fadeIn"] == "randomBlockFadeIn") {
+      for (let i = 0; i < allBlocks.length; i++) {
+        let paisleyFade = new ObjectFadeIn((Math.floor(Math.random() * 60000) + 6000),  allBlocks[i])
+        paisleyFade.startObjectFadeIn()
+      }
+    } else if (rhombileSettings["fadeIn"] == "randomTileFadeIn") {
+      for (let i = 0; i < allBlocks.length; i++) {
+        allBlocks[i].style.opacity = 1;
+      }
+      for (let i = 0; i < allTiles.length; i++) {
+        let paisleyFade = new ObjectFadeIn((Math.floor(Math.random() * 60000) + 6000),  allTiles[i])
+        paisleyFade.startObjectFadeIn()
+      }
+    }
+    
+
+
+
+      
 }
