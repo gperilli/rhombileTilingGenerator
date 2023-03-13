@@ -1,7 +1,9 @@
 export { setRhombileTiling }
-import { degrees_to_radians } from '/jsm/utils/trig.js'
-import { pythagorean } from '/jsm/utils/trig.js'
-import { ObjectFadeIn } from '/jsm/objectFadeIn.js'
+import { degrees_to_radians } from '/src/utils/trig.js'
+import { pythagorean } from '/src/utils/trig.js'
+import { ObjectFadeIn } from '/src/objectFadeIn.js'
+import { ObjectShimmer } from '/src/objectShimmer.js'
+import { shimmerFrame }  from '/src/objectShimmer.js'
 
 class RhombileBlock {
     constructor(blockDiameter, rhombileSettings) {
@@ -211,22 +213,28 @@ function setRhombileTiling(containerSquare, tilingAreaWidthLength, rhombileSetti
     let allBlocks = document.querySelectorAll(".rhombileCubes")
     let allTiles = document.querySelectorAll(".rhombileTiles")
 
-    if (rhombileSettings["fadeIn"] == "appearOnLoad") {
+    if (rhombileSettings["fadeIn"] == "appearOnLoad" && rhombileSettings["animation"] == "static") {
       for (let i = 0; i < allBlocks.length; i++) {
         allBlocks[i].style.opacity = 1;
       }
-    } else if (rhombileSettings["fadeIn"] == "randomBlockFadeIn") {
+    } else if (rhombileSettings["fadeIn"] == "randomBlockFadeIn" && rhombileSettings["animation"] == "static") {
       for (let i = 0; i < allBlocks.length; i++) {
         let paisleyFade = new ObjectFadeIn((Math.floor(Math.random() * 60000) + 6000),  allBlocks[i])
         paisleyFade.startObjectFadeIn()
       }
-    } else if (rhombileSettings["fadeIn"] == "randomTileFadeIn") {
+    } else if (rhombileSettings["fadeIn"] == "randomTileFadeIn" && rhombileSettings["animation"] == "static") {
       for (let i = 0; i < allBlocks.length; i++) {
         allBlocks[i].style.opacity = 1;
       }
       for (let i = 0; i < allTiles.length; i++) {
         let paisleyFade = new ObjectFadeIn((Math.floor(Math.random() * 60000) + 6000),  allTiles[i])
         paisleyFade.startObjectFadeIn()
+      }
+    } else if (rhombileSettings["animation"] == "shimmer") {
+      for (let i = 0; i < allBlocks.length; i++) {
+        //console.log(allBlocks[i]);
+        let shimmer = new ObjectShimmer((Math.floor(Math.random() * 60000) + 6000), 1);
+        let shimmerAnimation = setInterval(shimmerFrame, 50, shimmer, allBlocks[i]);
       }
     }
     

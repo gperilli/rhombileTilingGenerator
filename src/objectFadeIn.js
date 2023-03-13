@@ -1,4 +1,4 @@
-import { easeFunctions } from '/jsm/utils/easeFunctions.js'
+import { easeFunctions } from '/src/utils/easeFunctions.js'
 
 export { ObjectFadeIn }
 
