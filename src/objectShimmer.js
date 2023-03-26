@@ -12,7 +12,6 @@ class ObjectShimmer {
 
 function shimmerFrame(shimmer, element) {
     shimmer.glowClock += 50;
-    // shimmer.amplitude = Math.sin(((Math.PI * 2) / shimmer.frequency) * shimmer.glowClock);
     let shimmerSineValue = Math.sin(((Math.PI * 2) / shimmer.frequency) * shimmer.glowClock);
     shimmer.amplitude = (shimmerSineValue * 0.5) + 0.5;
     element.style.opacity = shimmer.amplitude;
