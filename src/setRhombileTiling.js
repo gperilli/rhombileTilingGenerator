@@ -232,8 +232,8 @@ function setRhombileTiling(containerSquare, tilingAreaWidthLength, rhombileSetti
       }
     } else if (rhombileSettings["animation"] == "shimmer") {
       for (let i = 0; i < allBlocks.length; i++) {
-        //console.log(allBlocks[i]);
-        let shimmer = new ObjectShimmer((Math.floor(Math.random() * 60000) + 6000), 1);
+        allBlocks[i].style.opacity = 0;
+        let shimmer = new ObjectShimmer((Math.floor(Math.random() * 24000) + 6000), 0);
         let shimmerAnimation = setInterval(shimmerFrame, 50, shimmer, allBlocks[i]);
       }
     }
