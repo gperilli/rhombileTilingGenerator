@@ -1,5 +1,3 @@
-# rhombile
-A rhombile tiling designer created with vanilla JS.
 # Rhombile
 ![Rhombile](/graphics-rhombile.png)
 A background design / experiment in vanilla javascript. Hosted on my homepage at: [https://gperilli.dev/graphicswork/rhombile/](https://gperilli.dev/graphicswork/rhombile/).
