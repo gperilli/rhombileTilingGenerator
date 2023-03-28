@@ -5,7 +5,7 @@ class ObjectShimmer {
     constructor(frequency, amplitude) {
         this.frequency = frequency;
         this.amplitude = amplitude;
-        this.glowClock = frequency * 0.75;
+        this.glowClock = frequency / Math.PI * 2;
     }
 
 }
