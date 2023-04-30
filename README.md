@@ -16,7 +16,7 @@ Webpack can be used to produce minified production javascript. `npm start` will 
 
 ## Using a Local Server
 
-The Go Live feature in Visual Studio Code, or something like WAMP can be used to run and serve the code locally.
+The code will run after opening the index file in a modern browser. The Go Live feature in Visual Studio Code can be used to develop the code with live updates.
 
 ## License
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
