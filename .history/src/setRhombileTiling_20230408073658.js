@@ -31,13 +31,13 @@ class RhombileBlock {
       this.hexagonRightLowerPoint = [ this.hexagonWidth,(this.blockHypotenuse) ];
       this.hexagonBottomMostPoint = [ this.blockDiameter,(this.blockPerspDiameter + this.blockHypotenuse) ];
       this.hexagonUpperMostPoint = [ this.blockDiameter,(0 - this.blockPerspDiameter) ];
-
+      
       this.init()
     }
-
+  
     init() {
       let value;
-
+      
       let hexColors = [];
       let tileColors = [];
       let strokeWidth = 1;
@@ -92,17 +92,17 @@ class RhombileBlock {
         ];
         strokeWidth = 4;
       }
-
+      
       // Polygon One
-      var cubeTopPoints = [
-        this.hexagonCenterPoint,
-        this.hexagonLeftUpperPoint,
+      var cubeTopPoints = [ 
+        this.hexagonCenterPoint,      
+        this.hexagonLeftUpperPoint, 
         this.hexagonUpperMostPoint,
-        this.hexagonRightUpperPoint,
+        this.hexagonRightUpperPoint,    
       ];
 
       // Polygon Two
-      var cubeLeftPoints = [
+      var cubeLeftPoints = [ 
         this.hexagonCenterPoint,
         this.hexagonBottomMostPoint,
         this.hexagonLeftLowerPoint,
@@ -110,17 +110,17 @@ class RhombileBlock {
       ];
 
       // Polygon Three
-      var cubeRightPoints = [
-        this.hexagonCenterPoint,
+      var cubeRightPoints = [ 
+        this.hexagonCenterPoint, 
         this.hexagonBottomMostPoint,
         this.hexagonRightLowerPoint,
         this.hexagonRightUpperPoint
       ];
-
+      
       this.createCubeSidePolygon(cubeTopPoints, tileColors[0], strokeWidth, strokeColors[0]);
       this.createCubeSidePolygon(cubeLeftPoints, tileColors[1], strokeWidth, strokeColors[1]);
       this.createCubeSidePolygon(cubeRightPoints, tileColors[2], strokeWidth, strokeColors[2]);
-
+      
       return this.blockContainer;
     }
 
@@ -140,12 +140,12 @@ class RhombileBlock {
     }
 
     generateRGBColor(coloringOpacity, hexColor) {
-
+      
       let rgbColorArray = this.hexToRGB(hexColor);
-      return `rgb(
-        ${this.RGBAtoRGB(rgbColorArray[0], rgbColorArray[1], rgbColorArray[2], coloringOpacity)[0]},
-        ${this.RGBAtoRGB(rgbColorArray[0], rgbColorArray[1], rgbColorArray[2], coloringOpacity)[1]},
-        ${this.RGBAtoRGB(rgbColorArray[0], rgbColorArray[1], rgbColorArray[2], coloringOpacity)[2]}
+      return `rgb( 
+        ${this.RGBAtoRGB(rgbColorArray[0], rgbColorArray[1], rgbColorArray[2], coloringOpacity)[0]}, 
+        ${this.RGBAtoRGB(rgbColorArray[0], rgbColorArray[1], rgbColorArray[2], coloringOpacity)[1]}, 
+        ${this.RGBAtoRGB(rgbColorArray[0], rgbColorArray[1], rgbColorArray[2], coloringOpacity)[2]} 
       )`
     }
 
@@ -160,25 +160,25 @@ class RhombileBlock {
 
     hexToRGB(h) {
       let r = 0, g = 0, b = 0;
-
+    
       // 3 digits
       if (h.length == 4) {
         r = "0x" + h[1] + h[1];
         g = "0x" + h[2] + h[2];
         b = "0x" + h[3] + h[3];
-
+    
       // 6 digits
       } else if (h.length == 7) {
         r = "0x" + h[1] + h[2];
         g = "0x" + h[3] + h[4];
         b = "0x" + h[5] + h[6];
       }
-
+      
       return [r, g, b];
     }
 
   }
-
+  
 function isOdd(num) { return num % 2;}
 
 function setRhombileTiling(containerSquare, tilingAreaWidthLength, rhombileSettings) {
@@ -188,9 +188,7 @@ function setRhombileTiling(containerSquare, tilingAreaWidthLength, rhombileSetti
     const hexagonWidth = blockDiameter * 2;
     const blockPerspDiameter = Math.tan(degrees_to_radians(30)) * blockDiameter;
     const blockHypotenuse = pythagorean(blockDiameter, blockPerspDiameter);
-
-    console.log((blockPerspDiameter * 2) / blockHypotenuse);
-
+    
     let rhombileRows = Math.round(tilingAreaWidthLength / (blockHypotenuse + blockPerspDiameter)) + 2;
     let blocks = [];
     let blockCount = -1;
@@ -203,7 +201,7 @@ function setRhombileTiling(containerSquare, tilingAreaWidthLength, rhombileSetti
         blocks[j][i] = new RhombileBlock(blockDiameter, rhombileSettings);
         blocks[j][i].blockContainer.style.top = `${((tilingAreaWidthLength - ((blockHypotenuse + blockPerspDiameter) * j)) + blockPerspDiameter)}px`;
         blocks[j][i].blockContainer.style.left = `${((hexagonWidth * i) + xPositioningAdjuster)}px`;
-
+        
         blocks[j][i].blockContainer.style.opacity = 0;
         blocks[j][i].blockContainer.setAttribute('class', 'rhombileCubes');
         tilingArea.insertAdjacentHTML("beforeend", blocks[j][i].blockContainer.outerHTML);
@@ -239,4 +237,9 @@ function setRhombileTiling(containerSquare, tilingAreaWidthLength, rhombileSetti
         let shimmerAnimation = setInterval(shimmerFrame, 50, shimmer, allBlocks[i]);
       }
     }
+    
+
+
+
+      
 }

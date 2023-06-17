@@ -12,9 +12,9 @@ class ObjectFadeIn {
         this.fading = false;
         this.elementToBeFaded = elementToBeFaded;
     }
-    
+
     startObjectFadeIn() {
-        
+
         this.fading = true;
         let startTime = Date.now();
         this.startTime = startTime
@@ -23,7 +23,7 @@ class ObjectFadeIn {
 
         let id = setInterval(frame, 20);
         function frame() {
-            
+
             let timeNow = Date.now()
             if (timeNow > (startTime + duration)) {
                 fadeObject.setAttribute('class', `rhombileCubes startTime-${startTime} endTime-${startTime + duration}`);

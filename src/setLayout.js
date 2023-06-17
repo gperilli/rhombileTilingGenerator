@@ -28,13 +28,13 @@ function setRhombileBlockLayout(topLevelContainer, rhombileSettings) {
     topLevelContainerDimensions = topLevelContainerSize(topLevelContainer)
     topLevelContainerWidth = topLevelContainerDimensions[0]
     topLevelContainerHeight = topLevelContainerDimensions[1]
-    
+
     isLandscape = topLevelContainerWidth > topLevelContainerHeight;
     topLevelContainerParams = portraitLandscapeSwitcher(isLandscape, topLevelContainerWidth, topLevelContainerHeight)
     containerSquareWidth = topLevelContainerParams[0]
     containerXOffset = topLevelContainerParams[1]
     containerYOffset = topLevelContainerParams[2]
-    
+
     // set position and size of main container square
     const containerSquareElement = `<div id="rhombileTilingArea" style="position: absolute; overflow: hidden;"></div>`;
     topLevelContainer.insertAdjacentHTML("beforeend", containerSquareElement);
@@ -45,7 +45,6 @@ function setRhombileBlockLayout(topLevelContainer, rhombileSettings) {
     // set the rhombile tiling
     ////////////////////////////////////////////
     setRhombileTiling(containerSquare, containerSquareWidth, rhombileSettings);
-    
 }
 
 
@@ -64,12 +63,11 @@ function updateBlockLayout(topLevelContainer, rhombileSettings) {
     containerYOffset = topLevelContainerParams[2]
     document.querySelector("#rhombileTilingArea").innerHTML = '';
     containerSquarePositioning(containerSquare, containerSquareWidth, containerXOffset, containerYOffset);
-    
+
     // main square
     //paisleyBlock.width = containerSquareWidth
     //paisleyBlock.height = containerSquareWidth
 
-    // update position and size     
+    // update position and size
     setRhombileTiling(containerSquare, containerSquareWidth, rhombileSettings);
-
 }

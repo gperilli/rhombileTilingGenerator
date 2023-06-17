@@ -189,8 +189,6 @@ function setRhombileTiling(containerSquare, tilingAreaWidthLength, rhombileSetti
     const blockPerspDiameter = Math.tan(degrees_to_radians(30)) * blockDiameter;
     const blockHypotenuse = pythagorean(blockDiameter, blockPerspDiameter);
 
-    console.log((blockPerspDiameter * 2) / blockHypotenuse);
-
     let rhombileRows = Math.round(tilingAreaWidthLength / (blockHypotenuse + blockPerspDiameter)) + 2;
     let blocks = [];
     let blockCount = -1;
@@ -239,4 +237,9 @@ function setRhombileTiling(containerSquare, tilingAreaWidthLength, rhombileSetti
         let shimmerAnimation = setInterval(shimmerFrame, 50, shimmer, allBlocks[i]);
       }
     }
+
+
+
+
+
 }

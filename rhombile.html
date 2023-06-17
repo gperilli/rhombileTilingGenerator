@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+    <body style="width: 100vw; height: 100vh; margin: 0px; overflow: hidden;">
+        <div style="background: #eee; position: absolute; overflow: hidden;" id="tileOuterContainer">
+            <div id="tileInnerContainer" style="outline: 1px solid black; background: #fff; position: absolute;"></div>
+        </div>
+    </body>
+</html>
+
+<script>
+
+
+const topLevelContainer = document.querySelector("body");
+window.addEventListener( 'load', function(event) {
+    updateLayout(topLevelContainer);
+});
+
+window.addEventListener( 'resize', function(event) {
+    updateLayout(topLevelContainer)
+});
+
+function topLevelContainerSize(topLevelContainer) {
+    let topLevelContainerWidth = topLevelContainer.innerWidth || topLevelContainer.clientWidth;
+	let topLevelContainerHeight = topLevelContainer.innerHeight || topLevelContainer.clientHeight;
+    let topLevelContainerDimensions = {
+        width: topLevelContainerWidth,
+        height: topLevelContainerHeight
+    }
+    return topLevelContainerDimensions
+}
+
+let centralContainerSquareWidth, centralContainerXOffset, centralContainerYOffset;
+
+function portraitLandscapeSwitcher(isLandscape, screenWidth, screenHeight) {
+    if (isLandscape == true) {
+        // is landscape
+        centralContainerSquareWidth = screenHeight;
+        centralContainerXOffset = ((screenWidth - screenHeight) / 2) * 1;
+        centralContainerYOffset = 0;
+    } else {
+        // is portrait
+        centralContainerSquareWidth = screenWidth;
+        centralContainerXOffset = 0;
+        centralContainerYOffset = ((screenHeight - screenWidth) / 2) * 1;
+    }
+    let centralContainerParams = {
+        width: centralContainerSquareWidth,
+        height: centralContainerSquareWidth,
+        left: centralContainerXOffset,
+        top: centralContainerYOffset
+    }
+    return centralContainerParams
+}
+
+function updateLayout(topLevelContainer) {
+
+    // get screen size
+    let topLevelContainerDimensions = topLevelContainerSize(topLevelContainer)
+    document.querySelector("#tileInnerContainer").innerHTML = '';
+
+    let isLandscape = topLevelContainerDimensions.width > topLevelContainerDimensions.height;
+    let topLevelContainerParams = portraitLandscapeSwitcher(isLandscape, topLevelContainerDimensions.width, topLevelContainerDimensions.height)
+    let containerSquare = document.querySelector("#tileInnerContainer");
+
+    document.querySelector("#tileOuterContainer").style.width = topLevelContainerParams.width  + "px";
+    document.querySelector("#tileOuterContainer").style.height = topLevelContainerParams.height  + "px";
+    document.querySelector("#tileOuterContainer").style.left = topLevelContainerParams.left + "px";
+    document.querySelector("#tileOuterContainer").style.top = topLevelContainerParams.top + "px";
+
+    document.querySelector("#tileInnerContainer").style.width = (topLevelContainerParams.width * 0.9) + "px";
+    document.querySelector("#tileInnerContainer").style.height = (topLevelContainerParams.height * 0.9) + "px";
+    document.querySelector("#tileInnerContainer").style.left = (topLevelContainerParams.width * 0.05) + "px";
+    document.querySelector("#tileInnerContainer").style.top = (topLevelContainerParams.width * 0.05) + "px";
+
+    setRhombileTile(containerSquare, topLevelContainerParams.width);
+}
+
+function degrees_to_radians(degrees) {
+    var pi = Math.PI;
+    return degrees * (pi/180);
+  }
+
+function pythagorean(sideA, sideB){
+    return Math.sqrt(Math.pow(sideA, 2) + Math.pow(sideB, 2));
+}
+
+class RhombileBlock {
+    constructor(blockDiameter) {
+      this.blockDiameter = blockDiameter;
+
+      this.coloringOpacity = 0.5;
+      this.coloringOpacityShades = [
+        this.coloringOpacity,
+        (this.coloringOpacity * 0.6),
+        (this.coloringOpacity * 0.4),
+      ]
+      this.hexagonWidth = blockDiameter * 2;
+      this.blockPerspDiameter = Math.tan(degrees_to_radians(30)) * blockDiameter;
+      this.blockHypotenuse = pythagorean(blockDiameter, this.blockPerspDiameter)
+      this.blockContainer = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      this.blockContainer.setAttribute("height", this.blockHypotenuse);
+      this.blockContainer.setAttribute("width", (this.blockDiameter * 2));
+      this.blockContainer.style.overflow = "visible";
+      this.blockContainer.style.position = "absolute";
+      this.xAdjustment = ((this.blockHypotenuse * 2) - (this.blockDiameter * 2)) / 2;
+      this.hexagonCenterPoint = [ (this.blockDiameter + this.xAdjustment),(this.blockPerspDiameter + this.blockPerspDiameter) ];
+      this.hexagonLeftUpperPoint = [ (0 + this.xAdjustment),(0 + this.blockPerspDiameter) ];
+      this.hexagonLeftLowerPoint = [ (0 + this.xAdjustment), (this.blockHypotenuse + this.blockPerspDiameter) ];
+      this.hexagonRightUpperPoint = [ (this.hexagonWidth + this.xAdjustment), (0 + this.blockPerspDiameter) ];
+      this.hexagonRightLowerPoint = [ (this.hexagonWidth + this.xAdjustment),(this.blockHypotenuse + this.blockPerspDiameter) ];
+      this.hexagonBottomMostPoint = [ (this.blockDiameter + this.xAdjustment),(this.blockPerspDiameter + this.blockHypotenuse + this.blockPerspDiameter) ];
+      this.hexagonUpperMostPoint = [ (this.blockDiameter + this.xAdjustment),(0 - this.blockPerspDiameter + this.blockPerspDiameter) ];
+
+      this.init()
+    }
+
+    init() {
+      let value;
+
+      let hexColors = [];
+      let tileColors = [];
+      let strokeWidth = 1;
+      let strokeColors = [];
+
+        hexColors[0] = "#000000";
+        hexColors[1] = "#000000";
+        hexColors[2] = "#000000";
+        tileColors = [
+            this.generateRGBColor(this.coloringOpacityShades[0], hexColors[0]),
+            this.generateRGBColor(this.coloringOpacityShades[1], hexColors[1]),
+            this.generateRGBColor(this.coloringOpacityShades[2], hexColors[2])
+        ];
+        strokeColors = tileColors;
+        strokeWidth = 1;
+
+      // Polygon One
+      var cubeTopPoints = [
+        this.hexagonCenterPoint,
+        this.hexagonLeftUpperPoint,
+        this.hexagonUpperMostPoint,
+        this.hexagonRightUpperPoint,
+      ];
+
+      // Polygon Two
+      var cubeLeftPoints = [
+        this.hexagonCenterPoint,
+        this.hexagonBottomMostPoint,
+        this.hexagonLeftLowerPoint,
+        this.hexagonLeftUpperPoint,
+      ];
+
+      // Polygon Three
+      var cubeRightPoints = [
+        this.hexagonCenterPoint,
+        this.hexagonBottomMostPoint,
+        this.hexagonRightLowerPoint,
+        this.hexagonRightUpperPoint
+      ];
+
+      this.createCubeSidePolygon(cubeTopPoints, tileColors[0], strokeWidth, strokeColors[0]);
+      this.createCubeSidePolygon(cubeLeftPoints, tileColors[1], strokeWidth, strokeColors[1]);
+      this.createCubeSidePolygon(cubeRightPoints, tileColors[2], strokeWidth, strokeColors[2]);
+
+      return this.blockContainer;
+    }
+
+    createCubeSidePolygon(points, tileColor, strokeWidth, strokeColor) {
+      var cubeSidePolygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+      cubeSidePolygon.setAttribute("fill", tileColor);
+      cubeSidePolygon.setAttribute("stroke", strokeColor);
+      cubeSidePolygon.setAttribute("stroke-width", strokeWidth);
+      cubeSidePolygon.setAttribute('class', 'rhombileTiles');
+      this.blockContainer.appendChild(cubeSidePolygon);
+      for (let i = 0; i < points.length; i++) {
+        var point = this.blockContainer.createSVGPoint();
+        point.x = points[i][0];
+        point.y = points[i][1];
+        cubeSidePolygon.points.appendItem(point);
+      }
+    }
+
+    generateRGBColor(coloringOpacity, hexColor) {
+
+      let rgbColorArray = this.hexToRGB(hexColor);
+      return `rgb(
+        ${this.RGBAtoRGB(rgbColorArray[0], rgbColorArray[1], rgbColorArray[2], coloringOpacity)[0]},
+        ${this.RGBAtoRGB(rgbColorArray[0], rgbColorArray[1], rgbColorArray[2], coloringOpacity)[1]},
+        ${this.RGBAtoRGB(rgbColorArray[0], rgbColorArray[1], rgbColorArray[2], coloringOpacity)[2]}
+      )`
+    }
+
+    RGBAtoRGB(r, g, b, a) {
+      let alpha = 1 - a;
+      let RGB = [];
+      RGB[0] = Math.round((a * (r / 255) + (alpha * (255 / 255))) * 255);
+      RGB[1] = Math.round((a * (g / 255) + (alpha * (255 / 255))) * 255);
+      RGB[2] = Math.round((a * (b / 255) + (alpha * (255 / 255))) * 255);
+      return RGB;
+    }
+
+    hexToRGB(h) {
+      let r = 0, g = 0, b = 0;
+
+      // 3 digits
+      if (h.length == 4) {
+        r = "0x" + h[1] + h[1];
+        g = "0x" + h[2] + h[2];
+        b = "0x" + h[3] + h[3];
+
+      // 6 digits
+      } else if (h.length == 7) {
+        r = "0x" + h[1] + h[2];
+        g = "0x" + h[3] + h[4];
+        b = "0x" + h[5] + h[6];
+      }
+
+      return [r, g, b];
+    }
+
+  }
+
+
+function setRhombileTile(containerSquare, tilingAreaWidthLength) {
+    var tilingArea = containerSquare;
+
+    const hexagonDiameter = tilingAreaWidthLength * 0.9;
+    const blockPerspDiameter = (tilingAreaWidthLength * 0.9) / 4;
+    const blockHypotenuse = (tilingAreaWidthLength * 0.9) / 2;
+
+    let blockDiameter = Math.sqrt(Math.pow(blockHypotenuse, 2) - Math.pow(blockPerspDiameter, 2));
+    const hexagonWidth = blockDiameter * 2;
+
+
+    let rhombileBlock = new RhombileBlock(blockDiameter);
+    tilingArea.insertAdjacentHTML("beforeend", rhombileBlock.blockContainer.outerHTML);
+}
+
+</script>

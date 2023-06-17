@@ -12,11 +12,11 @@ import GUI from '/node_modules/lil-gui/dist/lil-gui.esm.js';
 localStorage.setItem("rhombileSettings-reset", "false")
 if (localStorage.getItem("rhombileSettings") == null || localStorage.getItem("rhombileSettings-reset") == "true") {
     // load default rhombile Settings
-    localStorage.setItem("rhombileSettings", JSON.stringify({ 
-        tileDensity: 20, 
-        coloring: "randomCubeColors", 
+    localStorage.setItem("rhombileSettings", JSON.stringify({
+        tileDensity: 20,
+        coloring: "randomCubeColors",
         colorTwo: "#000",
-        coloringOpacity: 0.5, 
+        coloringOpacity: 0.5,
         fadeIn: "appearOnLoad",
         animation: "static"
     }))
@@ -39,26 +39,26 @@ window.addEventListener( 'resize', function(event) {
 
 
 /////////////////////////////////////////////
-// the options menu 
+// the options menu
 ////////////////////////////////////////////
 const camelConverter = {
     singleColor: "Single Color",
-    randomTileColors: 'Random Tile Colors', 
-    randomCubeColors: 'Random Cube Colors', 
+    randomTileColors: 'Random Tile Colors',
+    randomCubeColors: 'Random Cube Colors',
     lines: 'Lines',
-    appearOnLoad:'Appear On Load', 
-    randomTileFadeIn: 'Random Tile Fade In', 
+    appearOnLoad:'Appear On Load',
+    randomTileFadeIn: 'Random Tile Fade In',
     randomBlockFadeIn: 'Random Block Fade In',
     shimmer: "Shimmer"
 }
 
 const gui = new GUI();
 
-const obj = { 
-    density: rhombileSettings["tileDensity"], 
-    opacity: rhombileSettings["coloringOpacity"] * 100, 
-    coloring: camelConverter[rhombileSettings.coloring], 
-    fadeins: camelConverter[rhombileSettings.fadeIn], 
+const obj = {
+    density: rhombileSettings["tileDensity"],
+    opacity: rhombileSettings["coloringOpacity"] * 100,
+    coloring: camelConverter[rhombileSettings.coloring],
+    fadeins: camelConverter[rhombileSettings.fadeIn],
     color1: rhombileSettings["colorTwo"],
     animations: camelConverter[rhombileSettings.animation]
 }
